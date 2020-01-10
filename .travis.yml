@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t maximus/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true maximus/react-test npm test
+
+after_success:
+  - docker build -t maximus/multi-client ./client
+  - docker build -t maximus/multi-nginx ./nginx
+  - docker build -t maximus/multi-server ./server
+  - docker build -t maximus/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push themn to the docker hub
+  - docker push maximus/multi-client
+  - docker push maximus/multi-nginx
+  - docker push maximus/multi-server
+  - docker push maximus/multi-worker
