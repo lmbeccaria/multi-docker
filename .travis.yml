@@ -3,20 +3,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t maximus/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t vinoveritas40/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true maximus/react-test npm test
+  - docker run -e CI=true vinoveritas40/react-test npm test
 
 after_success:
-  - docker build -t maximus/multi-client ./client
-  - docker build -t maximus/multi-nginx ./nginx
-  - docker build -t maximus/multi-server ./server
-  - docker build -t maximus/multi-worker ./worker
+  - docker build -t vinoveritas40/multi-client ./client
+  - docker build -t vinoveritas40/multi-nginx ./nginx
+  - docker build -t vinoveritas40/multi-server ./server
+  - docker build -t vinoveritas40/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push themn to the docker hub
-  - docker push maximus/multi-client
-  - docker push maximus/multi-nginx
-  - docker push maximus/multi-server
-  - docker push maximus/multi-worker
+  - docker push vinoveritas40/multi-client
+  - docker push vinoveritas40/multi-nginx
+  - docker push vinoveritas40/multi-server
+  - docker push vinoveritas40/multi-worker
